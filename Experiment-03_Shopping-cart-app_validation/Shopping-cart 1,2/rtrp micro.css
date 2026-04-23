@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MortalityGuard - Reducing Maternal & Infant Mortality in Rural India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --emergency: #e63946;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            position: relative;
+            padding-bottom: 3rem;
+        }
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary);
+        }
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+            border: 2px solid var(--secondary);
+        }
+        .btn-secondary:hover {
+            background-color: transparent;
+            color: var(--secondary);
+        }
+        .btn-emergency {
+            background-color: var(--emergency);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .hero {
+            background: linear-gradient(135deg, rgba(74,111,165,0.9) 0%, rgba(255,126,95,0.8) 100%), url('https://images.unsplash.com/photo-1581056771107-24ca5f033842') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 5rem 5%;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 1000px;
+            margin: -3rem auto 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        section {
+            padding: 5rem 5%;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .cta {
+            background-color: var(--light);
+            text-align: center;
+        }
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Voice Assistance Styles */
+        .voice-assist {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-voice {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .btn-voice-hold {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            margin: 1rem auto;
+            display: block;
+        }
+        .common-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .quick-question {
+            background-color: var(--light);
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Emergency Styles */
+        .emergency-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+        }
+        .emergency-content {
+            max-width: 800px;
+        }
+        .emergency-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .emergency-option {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+        .btn-video-call, .btn-call-now, .btn-get-directions {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-video-call {
+            background-color: var(--primary);
+            color: white;
+        }
+        .emergency-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 100px;
+            margin-bottom: 1rem;
+        }
+        .btn-submit-emergency {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        /* Regional Contacts Styles */
+        .region-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .region-selector select {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .contacts-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .contacts-results {
+                grid-template-columns: 1fr;
+            }
+        }
+        .map-placeholder {
+            background-color: #f8f9fa;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        .contacts-list {
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        .contact-category {
+            margin-bottom: 1.5rem;
+        }
+        .contact-category h3 {
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .contact-category ul {
+            list-style: none;
+            padding: 0;
+        }
+        .contact-category li {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .hotline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .hotline-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .hotline-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MortalityGuard</div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#regional-contacts">Contacts</a>
+            <a href="#about">About</a>
+            <div class="voice-assist">
+                <button id="voiceAssistantBtn" class="btn-voice">
+                    <i class="icon-mic"></i> Voice Help
+                </button>
+                <div class="language-selector">
+                    <select id="languageSelect">
+                        <option value="hi">हिंदी</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="bn">বাংলা</option>
+                        <option value="mr">मराठी</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+            <a href="/login" class="btn btn-primary">Login</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Reducing Maternal & Infant Mortality in Rural India</h1>
+        <p>MortalityGuard is a technology-driven platform empowering rural communities with knowledge and tools for safer pregnancies and healthier newborns.</p>
+        <a href="/register" class="btn btn-secondary">Get Started</a>
+    </section>
+
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-number">28</div>
+            <div class="stat-label">Infant Mortality Rate (per 1,000 live births)</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">97</div>
+            <div class="stat-label">Maternal Mortality Rate (per 100,000 births)</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">50%</div>
+            <div class="stat-label">Reduction Target by 2030</div>
+        </div>
+    </div>
+
+    <section id="features">
+        <div class="section-title">
+            <h2>Our Features</h2>
+            <p>MortalityGuard provides comprehensive solutions to address maternal and infant health challenges</p>
+        </div>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Education & Awareness</h3>
+                <p>Multilingual educational content on prenatal and postnatal care, nutrition, and hygiene practices.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⏰</div>
+                <h3>Smart Alerts</h3>
+                <p>Timely reminders for vaccinations, checkups, and nutritional needs throughout pregnancy and infancy.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👩‍⚕</div>
+                <h3>Telehealth Support</h3>
+                <p>Connect with healthcare professionals for consultations and emergency advice.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Data Analytics</h3>
+                <p>Identify high-risk pregnancies and regions needing intervention through advanced analytics.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🗣</div>
+                <h3>Voice Support</h3>
+                <p>Access critical information through voice commands for non-literate users.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Community Support</h3>
+                <p>Connect with other mothers and caregivers to share experiences and knowledge.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="regional-contacts">
+        <div class="section-title">
+            <h2>Regional Health Department Contacts</h2>
+            <p>Immediate contacts for your area</p>
+        </div>
+        
+        <div class="region-selector">
+            <select id="stateSelect">
+                <option value="">Select State</option>
+                <option value="up">Uttar Pradesh</option>
+                <option value="mh">Maharashtra</option>
+                <option value="br">Bihar</option>
+                <option value="wb">West Bengal</option>
+                <option value="ap">Andhra Pradesh</option>
+                <option value="tn">Tamil Nadu</option>
+                <option value="ka">Karnataka</option>
+                <option value="gj">Gujarat</option>
+                <option value="rj">Rajasthan</option>
+                <option value="mp">Madhya Pradesh</option>
+            </select>
+            
+            <select id="districtSelect" disabled>
+                <option value="">Select District</option>
+            </select>
+            
+            <button id="searchContacts" class="btn btn-primary">Search</button>
+        </div>
+        
+        <div class="contacts-results">
+            <div class="contacts-map">
+                <div class="map-placeholder">
+                    <p>Map will show selected district health facilities</p>
+                </div>
+            </div>
+            
+            <div class="contacts-list">
+                <div class="contact-category">
+                    <h3><i class="icon-hospital"></i> District Hospitals</h3>
+                    <ul id="hospitalsList">
+                        <li>Select a district to view hospitals</li>
+                    </ul>
+                </div>
+                
+                <div class="contact-category">
+                    <h3><i class="icon-officer"></i> Health Department Officers</h3>
+                    <ul id="officersList">
+                        <li>Select a district to view officers</li>
+                    </ul>
+                </div>
+                
+                <div class="contact-category">
+                    <h3><i class="icon-asha"></i> ASHA Workers in Your Area</h3>
+                    <ul id="ashaList">
+                        <li>Select a district to view ASHA workers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="emergency-hotlines">
+            <h3>24/7 Emergency Hotlines</h3>
+            <div class="hotline-grid">
+                <div class="hotline-card">
+                    <div class="hotline-number">108</div>
+                    <div class="hotline-label">National Emergency</div>
+                </div>
+                <div class="hotline-card">
+                    <div class="hotline-number">104</div>
+                    <div class="hotline-label">Health Advice</div>
+                </div>
+                <div class="hotline-card">
+                    <div class="hotline-number">102</div>
+                    <div class="hotline-label">Ambulance</div>
+                </div>
+                <div class="hotline-card">
+                    <div class="hotline-number">1098</div>
+                    <div class="hotline-label">Women in Distress</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="emergency-float">
+        <button id="emergencyBtn" class="btn-emergency">
+            <i class="icon-alert"></i> EMERGENCY
+        </button>
+    </div>
+
+    <!-- Voice Assistant Modal -->
+    <div id="voiceAssistantModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Voice Assistance</h3>
+            <div class="voice-status">
+                <p id="voiceStatus">Press and hold to speak</p>
+                <button id="voiceInputBtn" class="btn-voice-hold">
+                    <i class="icon-mic"></i> Hold to Speak
+                </button>
+            </div>
+            <div class="voice-response">
+                <p id="voiceResponse"></p>
+            </div>
+            <div class="common-questions">
+                <h4>Common Questions:</h4>
+                <button class="quick-question" data-question="prenatal care">Prenatal Care</button>
+                <button class="quick-question" data-question="vaccination schedule">Vaccination Schedule</button>
+                <button class="quick-question" data-question="emergency contacts">Emergency Contacts</button>
+                <button class="quick-question" data-question="nutrition advice">Nutrition Advice</button>
+                <button class="quick-question" data-question="nearest hospital">Nearest Hospital</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Modal -->
+    <div id="emergencyModal" class="modal">
+        <div class="modal-content emergency-content">
+            <span class="close">&times;</span>
+            <h3>Emergency Telemedicine Assistance</h3>
+            
+            <div class="emergency-options">
+                <div class="emergency-option">
+                    <h4>Immediate Video Consultation</h4>
+                    <button class="btn-video-call">
+                        <i class="icon-video"></i> Start Video Call
+                    </button>
+                    <p>Connect with available doctors</p>
+                </div>
+                
+                <div class="emergency-option">
+                    <h4>Emergency Call</h4>
+                    <div class="emergency-numbers">
+                        <p><strong>National Helpline:</strong> 108</p>
+                        <p><strong>Maternal Health:</strong> 104</p>
+                        <button class="btn-call-now">
+                            <i class="icon-phone"></i> Call Now
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="emergency-option">
+                    <h4>Nearest Healthcare Facilities</h4>
+                    <div id="nearbyFacilities">
+                        <p>Loading nearby facilities based on your location...</p>
+                    </div>
+                    <button class="btn-get-directions">
+                        <i class="icon-map"></i> Get Directions
+                    </button>
+                </div>
+            </div>
+            
+            <div class="emergency-form">
+                <h4>Describe the Emergency</h4>
+                <textarea placeholder="Briefly describe the situation (e.g., high fever during pregnancy, bleeding after delivery, newborn not feeding...)"></textarea>
+                <button class="btn-submit-emergency">
+                    Submit for Priority Assistance
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta">
+        <h2>Ready to make a difference?</h2>
+        <p>Join MortalityGuard today and be part of the solution to reduce maternal and infant mortality in rural India.</p>
+        <a href="/register" class="btn btn-secondary">Register Now</a>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2023 MortalityGuard. All rights reserved.</p>
+        <p>In partnership with government health initiatives across India</p>
+    </footer>
+
+    <script>
+        // Voice Assistant Functionality
+        const voiceAssistantBtn = document.getElementById('voiceAssistantBtn');
+        const voiceAssistantModal = document.getElementById('voiceAssistantModal');
+        const closeModalButtons = document.querySelectorAll('.close');
+        
+        voiceAssistantBtn.addEventListener('click', function() {
+            voiceAssistantModal.style.display = 'block';
+        });
+        
+        // Emergency Button Functionality
+        const emergencyBtn = document.getElementById('emergencyBtn');
+        const emergencyModal = document.getElementById('emergencyModal');
+        
+        emergencyBtn.addEventListener('click', function() {
+            emergencyModal.style.display = 'block';
+        });
+        
+        // Close modals when clicking X
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                voiceAssistantModal.style.display = 'none';
+                emergencyModal.style.display = 'none';
+            });
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === voiceAssistantModal) {
+                voiceAssistantModal.style.display = 'none';
+            }
+            if (event.target === emergencyModal) {
+                emergencyModal.style.display = 'none';
+            }
+        });
+        
+        // District selector functionality
+        const stateSelect = document.getElementById('stateSelect');
+        const districtSelect = document.getElementById('districtSelect');
+        
+        // Mock district data - in a real app this would come from an API
+        const districtData = {
+            up: ['Agra', 'Aligarh', 'Allahabad', 'Ambedkar Nagar', 'Amethi'],
+            mh: ['Mumbai', 'Pune', 'Nagpur', 'Nashik', 'Thane'],
+            br: ['Patna', 'Gaya', 'Bhagalpur', 'Muzaffarpur', 'Purnia'],
+            wb: ['Kolkata', 'Howrah', 'Darjeeling', 'Medinipur', 'Maldah'],
+            ap: ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Nellore', 'Kurnool'],
+            tn: ['Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli', 'Salem'],
+            ka: ['Bangalore', 'Mysore', 'Hubli', 'Mangalore', 'Belgaum'],
+            gj: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Bhavnagar'],
+            rj: ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer'],
+            mp: ['Bhopal', 'Indore', 'Jabalpur', 'Gwalior', 'Ujjain']
+        };
+        
+        stateSelect.addEventListener('change', function() {
+            const selectedState = this.value;
+            districtSelect.disabled = !selectedState;
+            
+            if (selectedState) {
+                // Clear previous options
+                districtSelect.innerHTML = '<option value="">Select District</option>';
+                
+                // Add new options
+                districtData[selectedState].forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.toLowerCase().replace(' ', '-');
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        });
+        
+        // Search contacts functionality
+        document.getElementById('searchContacts').addEventListener('click', function() {
+            const state = stateSelect.value;
+            const district = districtSelect.value;
+            
+            if (!state || !district) {
+                alert('Please select both state and district');
+                return;
+            }
+            
+            // In a real app, this would fetch from an API
+            updateContactLists(state, district);
+        });
+        
+        function updateContactLists(state, district) {
+            // Mock data - in a real app this would come from an API
+            const hospitals = [
+                ${district.charAt(0).toUpperCase() + district.slice(1)} District Hospital,
+                Government Maternity Hospital,
+                Community Health Center
+            ];
+            
+            const officers = [
+                Dr. ${district.charAt(0).toUpperCase() + district.slice(1)} Kumar - Chief Medical Officer,
+                Mrs. ${district.charAt(0).toUpperCase() + district.slice(1)} Devi - Health Supervisor,
+                Mr. ${district.charAt(0).toUpperCase() + district.slice(1)} Singh - Public Health Coordinator
+            ];
+            
+            const ashaWorkers = [
+                Asha Devi - Ward 1,
+                Geeta Kumari - Ward 2,
+                Sunita Sharma - Ward 3
+            ];
+            
+            // Update hospitals list
+            const hospitalsList = document.getElementById('hospitalsList');
+            hospitalsList.innerHTML = '';
+            hospitals.forEach(hospital => {
+                const li = document.createElement('li');
+                li.textContent = hospital;
+                hospitalsList.appendChild(li);
+            });
+            
+            // Update officers list
+            const officersList = document.getElementById('officersList');
+            officersList.innerHTML = '';
+            officers.forEach(officer => {
+                const li = document.createElement('li');
+                li.textContent = officer;
+                officersList.appendChild(li);
+            });
+            
+            // Update ASHA workers list
+            const ashaList = document.getElementById('ashaList');
+            ashaList.innerHTML = '';
+            ashaWorkers.forEach(asha => {
+                const li = document.createElement('li');
+                li.textContent = asha;
+                ashaList.appendChild(li);
+            });
+            
+            // Update map placeholder text
+            document.querySelector('.map-placeholder p').textContent = 
+                Map view of health facilities in ${district.charAt(0).toUpperCase() + district.slice(1)} district;
+        }
+        
+        // Quick question buttons in voice assistant
+        document.querySelectorAll('.quick-question').forEach(button => {
+            button.addEventListener('click', function() {
+                const question = this.getAttribute('data-question');
+                const responseBox = document.getElementById('voiceResponse');
+                
+                // Mock responses - in a real app this would come from an API
+                const responses = {
+                    'prenatal care': 'Prenatal care should include regular checkups, balanced nutrition with iron and folic acid, and avoiding heavy work. Visit your nearest health center for antenatal checkups at least 4 times during pregnancy.',
+                    'vaccination schedule': 'Newborns should receive BCG at birth, OPV-0 at birth, Hepatitis B at birth, then DPT, OPV, Hepatitis B at 6, 10, and 14 weeks. Pregnant women should get TT vaccinations.',
+                    'emergency contacts': 'For emergencies, call 108 for ambulance, 104 for health advice, or contact your nearest ASHA worker. The district hospital emergency number is 102.',
+                    'nutrition advice': 'Pregnant women need extra 300 calories daily. Eat iron-rich foods like leafy greens, protein like lentils and milk, and take folic acid supplements.',
+                    'nearest hospital': 'The nearest government hospital is District Hospital located at the city center, open 24/7 with emergency maternity services.'
+                };
+                
+                responseBox.textContent = responses[question] || 'I cannot answer that question right now. Please try asking differently or contact a health worker.';
+            });
+        });
+        
+        // Emergency call buttons
+        document.querySelector('.btn-call-now').addEventListener('click', function() {
+            alert('In a real app, this would initiate a call to 108 emergency services');
+        });
+        
+        // Video call button
+        document.querySelector('.btn-video-call').addEventListener('click', function() {
+            alert('In a real app, this would initiate a WebRTC video call with an available doctor');
+        });
+        
+        // Get directions button
+        document.querySelector('.btn-get-directions').addEventListener('click', function() {
+            alert('In a real app, this would open Google Maps with directions to the nearest hospital');
+        });
+        
+        // Submit emergency form
+        document.querySelector('.btn-submit-emergency').addEventListener('click', function() {
+            const description = document.querySelector('.emergency-form textarea').value;
+            if (description.trim() === '') {
+                alert('Please describe the emergency situation');
+                return;
+            }
+            alert(Emergency submitted: ${description}\nA health worker will contact you shortly.);
+            emergencyModal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
